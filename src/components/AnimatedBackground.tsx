@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 
 const AnimatedBackground = () => {
   const [stars, setStars] = useState<Array<{ id: number; x: number; y: number; size: number; delay: number }>>([]);
+  const [birds, setBirds] = useState<Array<{ id: number; y: number; size: number; speed: number; delay: number }>>([]);
 
   useEffect(() => {
     const generateStars = () => {
@@ -18,7 +19,22 @@ const AnimatedBackground = () => {
       setStars(newStars);
     };
 
+    const generateBirds = () => {
+      const newBirds = [];
+      for (let i = 0; i < 8; i++) {
+        newBirds.push({
+          id: i,
+          y: Math.random() * 60 + 10, // Birds fly in upper 60% of screen
+          size: Math.random() * 0.5 + 0.5,
+          speed: Math.random() * 10 + 15, // 15-25s animation duration
+          delay: Math.random() * 20, // Stagger the birds
+        });
+      }
+      setBirds(newBirds);
+    };
+
     generateStars();
+    generateBirds();
   }, []);
 
   return (
@@ -33,6 +49,24 @@ const AnimatedBackground = () => {
            style={{ animationDelay: '5s', animationDuration: '30s' }} />
       <div className="absolute top-20 left-0 w-20 h-10 bg-white/25 rounded-full animate-drift" 
            style={{ animationDelay: '10s', animationDuration: '20s' }} />
+      
+      {/* Flying Birds */}
+      {birds.map((bird) => (
+        <div
+          key={bird.id}
+          className="absolute text-stardew-brown/60 animate-drift"
+          style={{
+            top: `${bird.y}%`,
+            left: '-50px',
+            fontSize: `${bird.size}rem`,
+            animationDuration: `${bird.speed}s`,
+            animationDelay: `${bird.delay}s`,
+            transform: `scale(${bird.size})`,
+          }}
+        >
+          🕊️
+        </div>
+      ))}
       
       {/* Twinkling Stars */}
       {stars.map((star) => (
