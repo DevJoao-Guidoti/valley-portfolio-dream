@@ -57,6 +57,14 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+        stardew: {
+          green: "hsl(var(--stardew-green))",
+          brown: "hsl(var(--stardew-brown))",
+          sky: "hsl(var(--stardew-sky))",
+          gold: "hsl(var(--stardew-gold))",
+          coral: "hsl(var(--stardew-coral))",
+          night: "hsl(var(--stardew-night))",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -84,6 +92,9 @@ export default {
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        "float": "float 6s ease-in-out infinite",
+        "twinkle": "twinkle 2s ease-in-out infinite",
+        "drift": "drift 20s linear infinite",
       },
     },
   },
