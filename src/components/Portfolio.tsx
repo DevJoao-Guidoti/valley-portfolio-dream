@@ -1,8 +1,14 @@
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
+import Autoplay from "embla-carousel-autoplay";
+import { useRef } from "react";
 
 const Portfolio = () => {
+  const plugin = useRef(
+    Autoplay({ delay: 3000, stopOnInteraction: true })
+  );
   const projects = [
     {
       title: "E-commerce Platform",
@@ -82,16 +88,33 @@ const Portfolio = () => {
           <h2 className="text-3xl font-bold text-center mb-8 text-stardew-brown flex items-center justify-center gap-3">
             🏅 Conquistas
           </h2>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-            {achievements.map((achievement, index) => (
-              <Card key={index} className="bg-gradient-magic/20 backdrop-blur-sm border-2 border-stardew-gold/30 hover:border-stardew-gold transition-all duration-300 hover:scale-105 animate-float" style={{ animationDelay: `${index * 0.5}s` }}>
-                <div className="p-4 text-center">
-                  <div className="text-3xl mb-2">{achievement.icon}</div>
-                  <h3 className="font-bold text-sm text-foreground">{achievement.title}</h3>
-                  <p className="text-xs text-muted-foreground mt-1">{achievement.date}</p>
-                </div>
-              </Card>
-            ))}
+          <div className="max-w-4xl mx-auto">
+            <Carousel
+              plugins={[plugin.current]}
+              className="w-full"
+              onMouseEnter={plugin.current.stop}
+              onMouseLeave={plugin.current.reset}
+              opts={{
+                align: "start",
+                loop: true,
+              }}
+            >
+              <CarouselContent className="-ml-2 md:-ml-4">
+                {achievements.map((achievement, index) => (
+                  <CarouselItem key={index} className="pl-2 md:pl-4 basis-full md:basis-1/2 lg:basis-1/3">
+                    <Card className="bg-gradient-magic/20 backdrop-blur-sm border-2 border-stardew-gold/30 hover:border-stardew-gold transition-all duration-300 hover:scale-105 animate-float" style={{ animationDelay: `${index * 0.5}s` }}>
+                      <div className="p-6 text-center">
+                        <div className="text-4xl mb-3">{achievement.icon}</div>
+                        <h3 className="font-bold text-lg text-foreground">{achievement.title}</h3>
+                        <p className="text-sm text-muted-foreground mt-2">{achievement.date}</p>
+                      </div>
+                    </Card>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <CarouselPrevious className="border-stardew-gold hover:bg-stardew-gold/20" />
+              <CarouselNext className="border-stardew-gold hover:bg-stardew-gold/20" />
+            </Carousel>
           </div>
         </section>
 
