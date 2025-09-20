@@ -1,13 +1,97 @@
 // Sidebar Toggle
-document.addEventListener('DOMContentLoaded', () => {
-    const sidebar = document.getElementById('sidebar');
-    const sidebarToggle = document.getElementById('sidebarToggle');
-    
-    if (sidebar && sidebarToggle) {
-        sidebarToggle.addEventListener('click', () => {
-            sidebar.classList.toggle('collapsed');
-        });
+const sidebar = document.getElementById('sidebar');
+const sidebarToggle = document.getElementById('sidebarToggle');
+
+sidebarToggle.addEventListener('click', () => {
+    sidebar.classList.toggle('collapsed');
+});
+
+// Carousel Functionality
+class AchievementsCarousel {
+    constructor() {
+        this.track = document.getElementById('carouselTrack');
+        this.prevBtn = document.getElementById('prevBtn');
+        this.nextBtn = document.getElementById('nextBtn');
+        this.cards = document.querySelectorAll('.achievement-card');
+        this.currentIndex = 0;
+        this.cardWidth = 250; // width + gap
+        this.visibleCards = this.getVisibleCards();
+        this.autoplayInterval = null;
+        this.isAutoplayPaused = false;
+        
+        this.init();
     }
+    
+    getVisibleCards() {
+        const containerWidth = document.querySelector('.carousel-container').offsetWidth;
+        return Math.floor(containerWidth / this.cardWidth);
+    }
+    
+    init() {
+        this.prevBtn.addEventListener('click', () => this.prev());
+        this.nextBtn.addEventListener('click', () => this.next());
+        
+        // Auto-resize handling
+        window.addEventListener('resize', () => {
+            this.visibleCards = this.getVisibleCards();
+            this.updatePosition();
+        });
+        
+        // Mouse hover pause/resume
+        const carousel = document.getElementById('achievementsCarousel');
+        carousel.addEventListener('mouseenter', () => this.pauseAutoplay());
+        carousel.addEventListener('mouseleave', () => this.resumeAutoplay());
+        
+        this.startAutoplay();
+    }
+    
+    updatePosition() {
+        const maxIndex = Math.max(0, this.cards.length - this.visibleCards);
+        this.currentIndex = Math.min(this.currentIndex, maxIndex);
+        
+        const translateX = -this.currentIndex * (this.cardWidth + 16); // 16px gap
+        this.track.style.transform = `translateX(${translateX}px)`;
+    }
+    
+    next() {
+        const maxIndex = Math.max(0, this.cards.length - this.visibleCards);
+        this.currentIndex = this.currentIndex >= maxIndex ? 0 : this.currentIndex + 1;
+        this.updatePosition();
+    }
+    
+    prev() {
+        const maxIndex = Math.max(0, this.cards.length - this.visibleCards);
+        this.currentIndex = this.currentIndex <= 0 ? maxIndex : this.currentIndex - 1;
+        this.updatePosition();
+    }
+    
+    startAutoplay() {
+        this.autoplayInterval = setInterval(() => {
+            if (!this.isAutoplayPaused) {
+                this.next();
+            }
+        }, 3000);
+    }
+    
+    pauseAutoplay() {
+        this.isAutoplayPaused = true;
+    }
+    
+    resumeAutoplay() {
+        this.isAutoplayPaused = false;
+    }
+    
+    stopAutoplay() {
+        if (this.autoplayInterval) {
+            clearInterval(this.autoplayInterval);
+            this.autoplayInterval = null;
+        }
+    }
+}
+
+// Initialize carousel when DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+    new AchievementsCarousel();
     
     // Animate stat bars on load
     setTimeout(() => {
@@ -20,8 +104,10 @@ document.addEventListener('DOMContentLoaded', () => {
             }, 100);
         });
     }, 500);
-    
-    // Add floating animation delays to achievement cards
+});
+
+// Add floating animation delays to achievement cards
+document.addEventListener('DOMContentLoaded', () => {
     const achievementCards = document.querySelectorAll('.achievement-card');
     achievementCards.forEach((card, index) => {
         card.style.animationDelay = `${index * 0.5}s`;
