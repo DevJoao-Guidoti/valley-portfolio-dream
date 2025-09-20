@@ -235,7 +235,7 @@ body {
   padding: 2rem;
 }
 
-body:has(.sidebar.collapsed) .main-content {
+.sidebar.collapsed + .main-content {
   margin-left: 50px;
 }
 
@@ -430,26 +430,17 @@ body:has(.sidebar.collapsed) .main-content {
   max-width: 800px;
   margin: 0 auto;
   overflow: hidden;
-  border-radius: 16px;
 }
 
 .carousel {
   overflow: hidden;
-  position: relative;
-  height: 200px;
+  border-radius: 16px;
 }
 
 .carousel-track {
   display: flex;
+  transition: transform 0.5s ease;
   gap: 1rem;
-  position: absolute;
-  left: 100%;
-  animation: infiniteScroll 20s linear infinite;
-  align-items: center;
-}
-
-.carousel-track:hover {
-  animation-play-state: paused;
 }
 
 .achievement-card {
@@ -458,14 +449,10 @@ body:has(.sidebar.collapsed) .main-content {
   backdrop-filter: blur(10px);
   border: 2px solid rgba(245, 200, 66, 0.3);
   border-radius: 16px;
-  padding: 1.5rem 1rem;
+  padding: 2rem 1rem;
   text-align: center;
   transition: all 0.3s ease;
   animation: float 3s ease-in-out infinite;
-  height: 180px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
 }
 
 .achievement-card:hover {
@@ -474,12 +461,12 @@ body:has(.sidebar.collapsed) .main-content {
 }
 
 .achievement-icon {
-  font-size: 2.5rem;
-  margin-bottom: 0.8rem;
+  font-size: 3rem;
+  margin-bottom: 1rem;
 }
 
 .achievement-card h3 {
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   font-weight: bold;
   color: var(--foreground);
   margin-bottom: 0.5rem;
@@ -488,6 +475,35 @@ body:has(.sidebar.collapsed) .main-content {
 .achievement-card p {
   color: var(--muted-foreground);
   font-size: 0.9rem;
+}
+
+.carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: var(--stardew-gold);
+  color: white;
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1.5rem;
+  transition: all 0.3s ease;
+  z-index: 10;
+}
+
+.carousel-btn:hover {
+  background: #e6b73a;
+  transform: translateY(-50%) scale(1.1);
+}
+
+.carousel-btn.prev {
+  left: -20px;
+}
+
+.carousel-btn.next {
+  right: -20px;
 }
 
 /* Contact Section */
@@ -563,15 +579,6 @@ body:has(.sidebar.collapsed) .main-content {
   }
 }
 
-@keyframes infiniteScroll {
-  0% {
-    left: 100%;
-  }
-  100% {
-    left: -100%;
-  }
-}
-
 /* Responsive */
 @media (max-width: 768px) {
   .sidebar {
@@ -586,7 +593,7 @@ body:has(.sidebar.collapsed) .main-content {
     margin-left: 250px;
   }
   
-  body:has(.sidebar.collapsed) .main-content {
+  .sidebar.collapsed + .main-content {
     margin-left: 50px;
   }
   
@@ -595,15 +602,12 @@ body:has(.sidebar.collapsed) .main-content {
     gap: 1.5rem;
   }
   
-  .achievement-card {
-    flex: 0 0 200px;
-    height: 160px;
-    padding: 1rem;
+  .carousel-track {
+    gap: 0.5rem;
   }
   
-  .achievement-icon {
-    font-size: 2rem;
-    margin-bottom: 0.5rem;
+  .achievement-card {
+    flex: 0 0 200px;
   }
 }
 
@@ -621,7 +625,7 @@ body:has(.sidebar.collapsed) .main-content {
     padding: 1rem;
   }
   
-  body:has(.sidebar.collapsed) .main-content {
+  .sidebar.collapsed + .main-content {
     margin-left: 0;
   }
   
